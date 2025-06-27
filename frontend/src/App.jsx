@@ -94,7 +94,8 @@ export default function App() {
 
         try {
             // This now calls our own backend server
-            const response = await fetch('/api/analyze', {
+            const apiUrl = `${import.meta.env.VITE_API_URL}/api/analyze`;
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ note }),
