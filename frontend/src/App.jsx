@@ -200,13 +200,13 @@ export default function App() {
                     <div className="space-y-6">
                         {summary && (
                         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                            <h3 className="font-semibold text-gray-700 mb-2">AI Summary</h3>
+                            <h3 className="font-semibold text-gray-700 mb-2">Summary</h3>
                             <p className="text-sm text-gray-600 italic">"{summary}"</p>
                         </div>
                         )}
                         {suggestedCodes.length > 0 && (
                         <div className="space-y-4">
-                            <h2 className="text-lg font-semibold text-gray-700">AI Code Suggestions</h2>
+                            <h2 className="text-lg font-semibold text-gray-700">Code Suggestions</h2>
                             <div className="space-y-3">{suggestedCodes.map(code => <CodeRow key={code.code} code={code} onStatusChange={handleCodeStatusChange} />)}</div>
                         </div>
                         )}
