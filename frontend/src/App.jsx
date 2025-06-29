@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { FileText, CheckCircle, XCircle, AlertTriangle, Send, Cpu, Activity, ThumbsUp, ThumbsDown } from 'lucide-react';
 
-// --- Helper Components (No change from original) ---
 
 const ConfidenceChip = ({ score }) => {
   const getConfidenceStyle = (score) => {
@@ -68,8 +67,6 @@ const LoadingSpinner = () => (
 
 const sampleNote = `Patient: John Doe\nDOB: 1965-04-12\nVisit Date: 2024-06-27\n\nS: Patient is a 59-year-old male with a history of type 2 diabetes mellitus, presenting for a follow-up. He reports occasional shortness of breath, especially on exertion. He has been compliant with his metformin. No chest pain reported.\n\nO: Vitals: BP 135/85, HR 78, RR 16, SpO2 98% on room air.\nCardiovascular: Regular rate and rhythm, no murmurs.\nLungs: Clear to auscultation bilaterally.\nLabs: A1c is 7.2.\n\nA:\n1. Type 2 Diabetes Mellitus without complications.\n2. Essential hypertension.\n3. Shortness of breath, likely related to deconditioning.\n\nP:\n1. Continue metformin 1000mg BID.\n2. Start Lisinopril 10mg daily for BP control.\n3. Echocardiogram ordered to evaluate cardiac function due to dyspnea.\n4. Patient advised on lifestyle modification and exercise.\n5. Follow-up in 3 months.`;
 
-
-// --- Main App Component ---
 export default function App() {
     const [note, setNote] = useState(sampleNote);
     const [summary, setSummary] = useState('');
@@ -93,7 +90,6 @@ export default function App() {
         setSummary('');
 
         try {
-            // This now calls our own backend server
             const apiUrl = `${import.meta.env.VITE_API_URL}/api/analyze`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -124,14 +120,13 @@ export default function App() {
         setNcciResult(null);
     };
 
-    // This is a mock function, as a real NCCI check is complex.
     const handleNcciCheck = async () => {
         if(acceptedCodes.length === 0) {
             setNcciResult({ status: 'info', message: 'No accepted codes to check.' });
             return;
         }
         setNcciResult({ status: 'loading' });
-        setTimeout(() => { // Simulating network delay
+        setTimeout(() => { 
             const codeSet = new Set(acceptedCodes.map(c => c.code));
             let conflicts = [];
             if (codeSet.has('99214') && codeSet.has('99396')) {
@@ -194,7 +189,6 @@ export default function App() {
                     {error && <p className="text-red-600 text-center p-3 bg-red-100 rounded-lg">{error}</p>}
                 </div>
 
-                {/* Right Column: AI Output */}
                 <div className="space-y-6 mt-8 lg:mt-0">
                     {isLoading ? <LoadingSpinner /> : (
                     <div className="space-y-6">

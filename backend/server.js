@@ -1,25 +1,21 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config(); 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// --- Basic Server Setup ---
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// --- Middleware ---
-app.use(cors()); // Enable CORS for all routes
-app.use(express.json()); // Enable parsing of JSON request bodies
+app.use(cors()); 
+app.use(express.json()); 
 
-// --- AI Client Initialization ---
 if (!process.env.GEMINI_API_KEY) {
     console.error("FATAL ERROR: GEMINI_API_KEY is not defined in the .env file.");
-    process.exit(1); // Exit if the API key is missing
+    process.exit(1); 
 }
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// --- API Endpoint ---
 app.post('/api/analyze', async (req, res) => {
     const { note } = req.body;
 
@@ -29,7 +25,6 @@ app.post('/api/analyze', async (req, res) => {
 
     console.log("Received request to analyze note...");
 
-    // --- Structured Output Prompt for Gemini ---
     const prompt = `
         Analyze the following clinical note.
         1. Extract relevant ICD-10 and CPT codes.
@@ -54,13 +49,11 @@ app.post('/api/analyze', async (req, res) => {
         const response = await result.response;
         let text = response.text();
 
-        // Clean the response to ensure it's valid JSON
         text = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
         console.log("AI Response received, parsing JSON...");
         const parsedJson = JSON.parse(text);
 
-        // Send the structured data back to the frontend
         res.json(parsedJson);
 
     } catch (error) {
@@ -69,7 +62,6 @@ app.post('/api/analyze', async (req, res) => {
     }
 });
 
-// --- Start the server ---
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
